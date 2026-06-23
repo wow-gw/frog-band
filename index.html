@@ -23,9 +23,17 @@
     min-height:100vh;padding:0 0 80px;max-width:600px;margin:0 auto;overflow-x:hidden;}
 
   /* ── hero ── */
-  .hero{position:relative;padding:0;text-align:center;
-    background:#000;overflow:hidden;border-bottom:3px solid var(--red);
-    line-height:0;font-size:0;}
+  .hero{
+    position:relative;
+    width:100vw;
+    left:50%;
+    transform:translateX(-50%);
+    background:#000;
+    border-bottom:3px solid var(--red);
+    line-height:0;
+    font-size:0;
+    overflow:hidden;
+  }
   .hero svg{display:block;width:100%;height:auto;}
   .wave-svg{display:none;}
   .band-emoji{display:none;}
