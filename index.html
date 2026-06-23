@@ -562,12 +562,12 @@ async function loadAll() {
       audVotes[v.audId][v.voter]={pitch:+v.pitch,feel:+v.feel,stage:+v.stage};
     });
 
-    // members (시트 데이터로 덮어쓰기)
+    // members: 시트 데이터 있으면 병합, 없으면 기본값(8명) 그대로 유지
     if (mRes?.members?.length) {
       mRes.members.forEach(m => {
-        const idx = members.findIndex(x=>x.idx==m.idx);
-        if (idx>=0) members[idx]={...members[idx],...m,photo:m.photo||null};
-        else members.push({...m,photo:m.photo||null});
+        const i = members.findIndex(x => String(x.idx) === String(m.idx));
+        if (i >= 0) members[i] = { ...members[i], ...m, photo: m.photo || null };
+        else members.push({ ...m, photo: m.photo || null });
       });
     }
 
@@ -596,6 +596,10 @@ function switchTab(id) {
   document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',TAB_IDS[i]===id));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.getElementById('panel-'+id).classList.add('active');
+  if (id==='members')  { renderMembers(); renderMemberChips(); }
+  if (id==='vote')     { renderMemberChips(); renderVoteList(); }
+  if (id==='result')   renderResult();
+  if (id==='audition') { renderAudMemberChips(); renderAuditions(); }
   if (id==='setup') {
     const status = document.getElementById('currentUrlStatus');
     status.textContent = SCRIPT_URL ? `✅ 현재 연결된 URL: ${SCRIPT_URL.slice(0,60)}…` : '❌ 아직 연결된 URL이 없어요.';
