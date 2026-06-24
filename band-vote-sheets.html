@@ -1,243 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🐸 물개구리 밴드</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;700;900&family=Space+Grotesk:wght@400;600;700&display=swap');
-  :root {
-    --bg:#070d10;--surface:#0c1a1f;--card:#101f26;--border:#1a3040;
-    --water:#00c8ff;--frog:#3ddc84;--pink:#ff6eb4;
-    --text:#e8f4f8;--muted:#4a7080;
-    --glow-w:0 0 18px #00c8ff66;--glow-g:0 0 18px #3ddc8466;
-  }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;
-    min-height:100vh;padding:0 0 80px;max-width:600px;margin:0 auto;overflow-x:hidden;}
-
-  /* ── hero ── */
-  .hero{position:relative;padding:40px 20px 56px;text-align:center;
-    background:linear-gradient(180deg,#071820 0%,#0b2a38 60%,#070d10 100%);overflow:hidden;}
-  .hero::before{content:'';position:absolute;inset:0;
-    background:radial-gradient(ellipse 60% 40% at 30% 80%,#00c8ff18 0%,transparent 70%),
-               radial-gradient(ellipse 50% 30% at 75% 60%,#3ddc8412 0%,transparent 70%);
-    pointer-events:none;}
-  .wave-svg{position:absolute;bottom:-2px;left:0;width:100%;pointer-events:none;}
-  .band-emoji{font-size:48px;margin-bottom:8px;display:block;animation:bob 3s ease-in-out infinite;}
-  @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
-  .band-label{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;
-    letter-spacing:4px;color:var(--water);text-transform:uppercase;margin-bottom:6px;}
-  .band-title{font-size:34px;font-weight:900;letter-spacing:-1px;
-    background:linear-gradient(135deg,var(--water) 0%,var(--frog) 100%);
-    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;}
-  .band-sub{color:var(--muted);font-size:12px;}
-  .bubbles{position:absolute;inset:0;pointer-events:none;}
-  .bubble{position:absolute;border-radius:50%;border:1px solid var(--water);
-    opacity:.18;animation:rise linear infinite;}
-  @keyframes rise{0%{transform:translateY(0) scale(1);opacity:.18;}100%{transform:translateY(-120px) scale(1.3);opacity:0;}}
-
-  /* ── tabs ── */
-  .tabs-wrap{position:sticky;top:0;z-index:50;background:#070d10ee;
-    backdrop-filter:blur(10px);padding:10px 12px 8px;border-bottom:1px solid var(--border);}
-  .tab-row{display:flex;gap:4px;margin-bottom:4px;}
-  .tab-row:last-child{margin-bottom:0;}
-  .tab{flex:1;padding:9px 4px;border:none;background:transparent;color:var(--muted);
-    font-size:11px;font-weight:700;font-family:'Noto Sans KR',sans-serif;
-    border-radius:8px;cursor:pointer;transition:all .2s;white-space:nowrap;}
-  .tab.active{background:linear-gradient(135deg,var(--water),var(--frog));
-    color:#071820;box-shadow:var(--glow-w);}
-
-  .page-body{padding:20px 16px;}
-  .panel{display:none;}.panel.active{display:block;}
-
-  .sec{font-size:10px;font-weight:700;letter-spacing:3px;color:var(--muted);
-    text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
-  .sec::after{content:'';flex:1;height:1px;background:var(--border);}
-
-  .card{background:var(--card);border:1px solid var(--border);border-radius:16px;
-    padding:20px;margin-bottom:14px;}
-  .card h3{font-size:15px;font-weight:700;margin-bottom:16px;}
-
-  .field{margin-bottom:12px;}
-  .field label{font-size:10px;color:var(--muted);font-weight:700;letter-spacing:1px;display:block;margin-bottom:5px;}
-  .field input,.field select,.field textarea{width:100%;background:var(--surface);
-    border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);
-    font-size:14px;font-family:'Noto Sans KR',sans-serif;outline:none;transition:border-color .2s;resize:none;}
-  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--water);}
-  .field select option{background:var(--surface);}
-
-  .diff-row{display:flex;gap:12px;}.diff-row .field{flex:1;}
-  .slider-wrap{display:flex;align-items:center;gap:10px;}
-  input[type=range]{-webkit-appearance:none;flex:1;height:4px;border-radius:2px;background:var(--border);outline:none;}
-  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;
-    border-radius:50%;background:var(--frog);cursor:pointer;box-shadow:0 0 6px var(--frog);}
-  .slider-val{font-size:13px;font-weight:700;color:var(--frog);min-width:20px;text-align:center;}
-
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;
-    padding:11px 20px;border-radius:10px;border:none;font-size:14px;font-weight:700;
-    font-family:'Noto Sans KR',sans-serif;cursor:pointer;transition:all .15s;width:100%;}
-  .btn-water{background:linear-gradient(135deg,var(--water),#0098cc);color:#071820;box-shadow:var(--glow-w);}
-  .btn-frog{background:linear-gradient(135deg,var(--frog),#28aa60);color:#071820;box-shadow:var(--glow-g);}
-  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);width:auto;}
-  .btn-ghost:hover{border-color:var(--water);color:var(--water);}
-  .btn-sm{padding:6px 12px;font-size:12px;width:auto;}
-  .btn:hover{filter:brightness(1.08);}
-
-  .member-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px;}
-  .mchip{padding:7px 14px;border-radius:20px;border:1px solid var(--border);
-    background:var(--surface);font-size:12px;font-weight:600;cursor:pointer;
-    transition:all .15s;color:var(--muted);}
-  .mchip.active{background:#00c8ff18;border-color:var(--water);color:var(--water);box-shadow:var(--glow-w);}
-
-  .song-card{background:var(--card);border:1px solid var(--border);
-    border-radius:14px;padding:16px;margin-bottom:10px;transition:border-color .2s;}
-  .song-card:hover{border-color:#1a4060;}
-  .song-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
-  .song-title{font-size:15px;font-weight:700;}
-  .song-artist{font-size:12px;color:var(--muted);margin-top:2px;}
-  .song-proposer{font-size:11px;color:var(--frog);font-weight:600;margin-top:3px;}
-
-  .badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px;}
-  .badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;}
-  .badge-genre{background:#0c1f2a;color:var(--water);border:1px solid #00c8ff33;}
-  .badge-sess{background:#0c1f15;color:var(--frog);border:1px solid #3ddc8433;}
-  .badge-voc{background:#1f0c1a;color:var(--pink);border:1px solid #ff6eb433;}
-
-  .diff-bars{margin-top:12px;}
-  .dbar-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
-  .dbar-label{font-size:11px;color:var(--muted);min-width:58px;}
-  .dbar-bg{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
-  .dbar-fill{height:100%;border-radius:3px;transition:width .4s;}
-  .fill-sess{background:var(--frog);}.fill-voc{background:var(--pink);}
-  .dbar-num{font-size:12px;font-weight:700;min-width:20px;text-align:right;}
-
-  .vote-row{display:flex;gap:6px;margin-top:12px;}
-  .vbtn{flex:1;padding:9px 6px;border-radius:10px;border:1px solid var(--border);
-    background:var(--surface);color:var(--text);font-size:12px;font-weight:600;
-    font-family:'Noto Sans KR',sans-serif;cursor:pointer;text-align:center;transition:all .15s;}
-  .vbtn:hover{border-color:var(--water);color:var(--water);}
-  .vbtn.v5{border-color:var(--frog);color:var(--frog);background:#3ddc8415;}
-  .vbtn.v3{border-color:var(--water);color:var(--water);background:#00c8ff15;}
-  .vbtn.v1{border-color:var(--muted);color:var(--muted);}
-  .vote-info{font-size:11px;color:var(--muted);margin-top:7px;}
-
-  .notice{border-radius:12px;padding:12px 16px;margin-bottom:18px;font-size:13px;line-height:1.6;}
-  .notice-water{background:#00c8ff10;border:1px solid #00c8ff30;color:var(--water);}
-  .notice-frog{background:#3ddc8410;border:1px solid #3ddc8430;color:var(--frog);}
-  .notice-pink{background:#ff6eb410;border:1px solid #ff6eb430;color:var(--pink);}
-  .notice-warn{background:#ffcc0015;border:1px solid #ffcc0040;color:#ffcc00;font-size:12px;}
-
-  .res-card{border-radius:14px;padding:18px;margin-bottom:10px;border:2px solid var(--border);}
-  .res-1{background:linear-gradient(135deg,#001a20,#070d10);border-color:var(--water);box-shadow:var(--glow-w);}
-  .res-2{background:linear-gradient(135deg,#0d1f10,#070d10);border-color:var(--frog);box-shadow:var(--glow-g);}
-  .res-3{background:linear-gradient(135deg,#1a1030,#070d10);border-color:var(--pink);}
-  .res-rank{font-size:10px;font-weight:700;letter-spacing:2px;margin-bottom:5px;}
-  .res-1 .res-rank{color:var(--water);}.res-2 .res-rank{color:var(--frog);}.res-3 .res-rank{color:var(--pink);}
-  .res-card:not(.res-1,.res-2,.res-3) .res-rank{color:var(--muted);}
-  .res-title{font-size:17px;font-weight:900;}.res-artist{font-size:12px;color:var(--muted);margin-top:2px;}
-  .res-score{font-size:26px;font-weight:900;font-family:'Space Grotesk',sans-serif;margin-top:8px;}
-  .res-1 .res-score{color:var(--water);}.res-2 .res-score{color:var(--frog);}.res-3 .res-score{color:var(--pink);}
-  .res-detail{font-size:12px;color:var(--muted);}
-
-  .aud-card{background:var(--card);border:1px solid var(--border);
-    border-radius:14px;padding:18px;margin-bottom:12px;transition:border-color .2s;}
-  .aud-name{font-size:15px;font-weight:700;}
-  .video-embed{width:100%;aspect-ratio:16/9;border-radius:10px;border:none;background:#000;margin:12px 0;}
-  .rating-group{margin-bottom:10px;}
-  .rating-label{font-size:10px;color:var(--muted);font-weight:700;letter-spacing:1px;display:block;margin-bottom:5px;}
-  .stars{display:flex;gap:6px;}
-  .star{font-size:22px;cursor:pointer;filter:grayscale(1) opacity(.3);transition:filter .1s,transform .1s;user-select:none;}
-  .star.on{filter:none;}.star:hover{transform:scale(1.15);}
-  .aud-scores{background:var(--surface);border-radius:10px;padding:12px 14px;margin-top:12px;}
-  .asrow{display:flex;align-items:center;gap:8px;margin-bottom:5px;font-size:11px;}
-  .asrow .lbl{min-width:54px;color:var(--muted);}
-  .asrow .bg{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
-  .asrow .fill{height:100%;border-radius:3px;background:var(--pink);transition:width .4s;}
-  .asrow .num{min-width:26px;text-align:right;font-weight:700;color:var(--pink);}
-  .aud-total{display:flex;justify-content:space-between;align-items:center;
-    padding-top:8px;border-top:1px solid var(--border);margin-top:8px;}
-  .aud-total .lbl{font-size:12px;color:var(--muted);}
-  .aud-total .val{font-size:20px;font-weight:900;font-family:'Space Grotesk',sans-serif;color:var(--frog);}
-  .crown{font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;
-    background:var(--frog);color:#071820;margin-left:8px;}
-
-  .band-hero{text-align:center;padding:18px;margin-bottom:20px;
-    background:linear-gradient(135deg,#001a20,#0c2215);border:1px solid var(--border);border-radius:16px;}
-  .band-hero-name{font-size:28px;font-weight:900;
-    background:linear-gradient(135deg,var(--water),var(--frog));
-    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-  .band-hero-sub{font-size:12px;color:var(--muted);margin-top:4px;}
-  .members-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;}
-  .mem-card{background:var(--card);border:1px solid var(--border);
-    border-radius:14px;padding:16px;text-align:center;transition:border-color .2s;}
-  .mem-card:hover{border-color:#1a4060;}
-  .mem-photo{width:68px;height:68px;border-radius:50%;object-fit:cover;
-    margin:0 auto 10px;display:block;border:2px solid var(--water);box-shadow:var(--glow-w);}
-  .mem-placeholder{width:68px;height:68px;border-radius:50%;background:var(--surface);
-    border:2px dashed var(--border);margin:0 auto 10px;display:flex;align-items:center;
-    justify-content:center;font-size:24px;cursor:pointer;transition:border-color .2s;
-    position:relative;overflow:hidden;}
-  .mem-placeholder:hover{border-color:var(--frog);}
-  .mem-placeholder input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
-  .mem-name{font-size:14px;font-weight:700;}
-  .mem-pos{font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--water);text-transform:uppercase;margin:3px 0 6px;}
-  .mem-quote{font-size:11px;color:var(--muted);line-height:1.5;font-style:italic;
-    border-top:1px solid var(--border);padding-top:8px;margin-top:4px;}
-  .mem-edit-btn{font-size:10px;color:var(--muted);background:transparent;
-    border:1px solid var(--border);border-radius:6px;padding:3px 8px;cursor:pointer;
-    margin-top:8px;font-family:'Noto Sans KR',sans-serif;transition:all .15s;}
-  .mem-edit-btn:hover{border-color:var(--frog);color:var(--frog);}
-
-  .hy{font-size:11px;font-weight:700;color:var(--water);margin:20px 0 8px;letter-spacing:2px;}
-  .hi{display:flex;align-items:center;gap:10px;padding:10px 14px;
-    background:var(--card);border-radius:10px;margin-bottom:6px;font-size:13px;}
-  .hdot{width:6px;height:6px;border-radius:50%;background:var(--muted);flex-shrink:0;}
-  .hdot.done{background:var(--frog);box-shadow:var(--glow-g);}
-  .hname{font-weight:600;}
-  .hnote{font-size:11px;color:var(--pink);margin-left:auto;}
-
-  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);
-    z-index:100;align-items:center;justify-content:center;padding:20px;}
-  .modal-overlay.open{display:flex;}
-  .modal{background:var(--card);border:1px solid var(--border);
-    border-radius:20px;padding:24px;width:100%;max-width:360px;}
-  .modal h3{font-size:15px;font-weight:700;margin-bottom:18px;color:var(--water);}
-  .modal-btns{display:flex;gap:10px;margin-top:16px;}
-  .modal-btns .btn{flex:1;}
-
-  /* ── loading spinner ── */
-  .spinner{display:inline-block;width:16px;height:16px;border:2px solid #ffffff44;
-    border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:6px;}
-  @keyframes spin{to{transform:rotate(360deg);}}
-
-  .sync-bar{position:fixed;bottom:16px;right:16px;background:var(--card);
-    border:1px solid var(--border);border-radius:10px;padding:8px 14px;
-    font-size:12px;color:var(--muted);z-index:99;transition:all .3s;}
-  .sync-bar.ok{color:var(--frog);border-color:var(--frog);}
-  .sync-bar.err{color:var(--pink);border-color:var(--pink);}
-
-  .empty{text-align:center;padding:44px 20px;color:var(--muted);font-size:14px;}
-  .empty .icon{font-size:36px;margin-bottom:10px;}
-
-  /* setup panel */
-  .setup-box{background:var(--card);border:2px solid var(--water);
-    border-radius:20px;padding:24px;margin-bottom:20px;}
-  .setup-box h2{font-size:18px;font-weight:900;color:var(--water);margin-bottom:6px;}
-  .setup-box p{font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.7;}
-  .step{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start;}
-  .step-num{width:28px;height:28px;border-radius:50%;background:var(--water);color:#071820;
-    font-weight:900;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-  .step-txt{font-size:13px;line-height:1.6;color:var(--text);}
-  .step-txt a{color:var(--frog);text-decoration:none;}
-  .step-txt code{background:var(--surface);padding:2px 6px;border-radius:4px;
-    font-size:12px;color:var(--lily);font-family:monospace;}
-  .url-input-row{display:flex;gap:8px;margin-top:16px;}
-  .url-input-row input{flex:1;background:var(--surface);border:1px solid var(--border);
-    border-radius:8px;padding:10px 12px;color:var(--text);font-size:13px;
-    font-family:monospace;outline:none;}
-  .url-input-row input:focus{border-color:var(--water);}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🐸 물개구리 밴드</title>
+  <link rel="stylesheet" href="css/band.css">
 </head>
 <body>
 
@@ -268,144 +35,146 @@
 
 <div class="page-body">
 
-
-<!-- ══ ADD ══ -->
-<div class="panel active" id="panel-add">
-  <div class="notice notice-frog">🎸 후보곡을 추가하면 구글 시트에 바로 저장돼요!</div>
-  <div class="card">
-    <h3>🎵 후보곡 추가</h3>
-    <div class="field"><label>아티스트</label><input type="text" id="inp-artist" placeholder="ex) 버즈, 10cm…"></div>
-    <div class="field"><label>곡 제목</label><input type="text" id="inp-title" placeholder="ex) 나에게로 떠나는 여행"></div>
-    <div class="field">
-      <label>장르 / 분위기</label>
-      <select id="inp-genre">
-        <option>🎸 락/밴드</option><option>💙 발라드</option>
-        <option>🔥 댄스/팝</option><option>🌊 인디/얼터너티브</option>
-        <option>🎷 재즈/소울</option><option>기타</option>
-      </select>
-    </div>
-    <div class="diff-row">
-      <div class="field"><label>세션 난이도</label>
-        <div class="slider-wrap">
-          <input type="range" min="1" max="5" value="3" id="sl-session" oninput="document.getElementById('sv-session').textContent=this.value">
-          <span class="slider-val" id="sv-session">3</span>
+  <!-- ══ ADD ══ -->
+  <div class="panel active" id="panel-add">
+    <div class="notice notice-frog">🎸 후보곡을 추가하면 구글 시트에 바로 저장돼요!</div>
+    <div class="card">
+      <h3>🎵 후보곡 추가</h3>
+      <div class="field"><label>아티스트</label><input type="text" id="inp-artist" placeholder="ex) 버즈, 10cm…"></div>
+      <div class="field"><label>곡 제목</label><input type="text" id="inp-title" placeholder="ex) 나에게로 떠나는 여행"></div>
+      <div class="field">
+        <label>장르 / 분위기</label>
+        <select id="inp-genre">
+          <option>🎸 락/밴드</option>
+          <option>💙 발라드</option>
+          <option>🔥 댄스/팝</option>
+          <option>🌊 인디/얼터너티브</option>
+          <option>🎷 재즈/소울</option>
+          <option>기타</option>
+        </select>
+      </div>
+      <div class="diff-row">
+        <div class="field">
+          <label>세션 난이도</label>
+          <div class="slider-wrap">
+            <input type="range" min="1" max="5" value="3" id="sl-session">
+            <span class="slider-val" id="sv-session">3</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>보컬 난이도</label>
+          <div class="slider-wrap">
+            <input type="range" min="1" max="5" value="3" id="sl-vocal">
+            <span class="slider-val" id="sv-vocal">3</span>
+          </div>
         </div>
       </div>
-      <div class="field"><label>보컬 난이도</label>
-        <div class="slider-wrap">
-          <input type="range" min="1" max="5" value="3" id="sl-vocal" oninput="document.getElementById('sv-vocal').textContent=this.value">
-          <span class="slider-val" id="sv-vocal">3</span>
-        </div>
+      <div class="field"><label>제안자</label><input type="text" id="inp-proposer" placeholder="본인 포지션 또는 이름"></div>
+      <button class="btn btn-frog" onclick="addSong()" style="margin-top:4px;">🐸 후보곡 추가</button>
+    </div>
+    <div class="sec">추가된 후보곡</div>
+    <div id="addedList"></div>
+  </div>
+
+  <!-- ══ VOTE ══ -->
+  <div class="panel" id="panel-vote">
+    <div class="notice notice-water">🗳️ 나를 먼저 선택하고 투표해봐요!<br>
+      <small style="opacity:.7">🔥 꼭해야해(5점) · 👍 괜찮아(3점) · 😐 글쎄(1점)</small></div>
+    <div class="sec">나는 누구?</div>
+    <div class="member-row" id="memberChips"></div>
+    <div class="sec">후보곡 투표</div>
+    <div id="voteList"></div>
+  </div>
+
+  <!-- ══ RESULT ══ -->
+  <div class="panel" id="panel-result">
+    <div class="notice notice-water">🎯 목표: <strong>3~4곡</strong> 선정</div>
+    <div class="sec">종합 순위</div>
+    <div id="resultList"></div>
+  </div>
+
+  <!-- ══ AUDITION ══ -->
+  <div class="panel" id="panel-audition">
+    <div class="notice notice-pink">🎤 영상 등록 후 멤버들이 별점 평가해요!</div>
+    <div class="card">
+      <h3>🎬 오디션 영상 등록</h3>
+      <div class="field"><label>부를 곡</label><input type="text" id="aud-song" placeholder="ex) 나에게로 떠나는 여행"></div>
+      <div class="field"><label>후보자 이름</label><input type="text" id="aud-name" placeholder="ex) 민준"></div>
+      <div class="field"><label>유튜브 URL</label><input type="text" id="aud-url" placeholder="https://youtu.be/..."></div>
+      <div class="field"><label>메모 (선택)</label><input type="text" id="aud-memo" placeholder="ex) 연습실 라이브"></div>
+      <button class="btn btn-frog" onclick="addAudition()" style="margin-top:4px;">🎤 오디션 등록</button>
+    </div>
+    <div class="notice notice-water" style="margin-bottom:14px;">
+      <div style="font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted);margin-bottom:8px;">평가자 선택</div>
+      <div class="member-row" id="audMemberChips" style="margin-bottom:0;"></div>
+    </div>
+    <div class="sec">오디션 후보</div>
+    <div id="auditionList"><div class="empty"><div class="icon">🎤</div>오디션 영상을 등록해보세요!</div></div>
+  </div>
+
+  <!-- ══ MEMBERS ══ -->
+  <div class="panel" id="panel-members">
+    <div class="band-hero">
+      <div class="band-hero-name">물개구리</div>
+      <div class="band-hero-sub">🐸 우리들의 밴드 🌊</div>
+    </div>
+    <div class="sec">멤버 소개</div>
+    <div class="members-grid" id="membersGrid"></div>
+    <div class="card" style="margin-top:4px;">
+      <h3 style="font-size:14px;margin-bottom:12px;">➕ 멤버 추가</h3>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <div class="field" style="flex:1;min-width:100px;margin-bottom:0;"><label>이름</label><input type="text" id="new-mem-name" placeholder="이름"></div>
+        <div class="field" style="flex:1;min-width:100px;margin-bottom:0;"><label>포지션</label><input type="text" id="new-mem-pos" placeholder="ex) 기타, 보컬…"></div>
       </div>
+      <button class="btn btn-frog" onclick="addMember()" style="margin-top:12px;">멤버 추가하기</button>
     </div>
-    <div class="field"><label>제안자</label><input type="text" id="inp-proposer" placeholder="본인 포지션 또는 이름"></div>
-    <button class="btn btn-frog" onclick="addSong()" style="margin-top:4px;">🐸 후보곡 추가</button>
   </div>
-  <div class="sec">추가된 후보곡</div>
-  <div id="addedList"></div>
-</div>
 
-<!-- ══ VOTE ══ -->
-<div class="panel" id="panel-vote">
-  <div class="notice notice-water">🗳️ 나를 먼저 선택하고 투표해봐요!<br>
-    <small style="opacity:.7">🔥 꼭해야해(5점) · 👍 괜찮아(3점) · 😐 글쎄(1점)</small></div>
-  <div class="sec">나는 누구?</div>
-  <div class="member-row" id="memberChips"></div>
-  <div class="sec">후보곡 투표</div>
-  <div id="voteList"></div>
-</div>
-
-<!-- ══ RESULT ══ -->
-<div class="panel" id="panel-result">
-  <div class="notice notice-water">🎯 목표: <strong>3~4곡</strong> 선정</div>
-  <div class="sec">종합 순위</div>
-  <div id="resultList"></div>
-</div>
-
-<!-- ══ AUDITION ══ -->
-<div class="panel" id="panel-audition">
-  <div class="notice notice-pink">🎤 영상 등록 후 멤버들이 별점 평가해요!</div>
-  <div class="card">
-    <h3>🎬 오디션 영상 등록</h3>
-    <div class="field"><label>부를 곡</label><input type="text" id="aud-song" placeholder="ex) 나에게로 떠나는 여행"></div>
-    <div class="field"><label>후보자 이름</label><input type="text" id="aud-name" placeholder="ex) 민준"></div>
-    <div class="field"><label>유튜브 URL</label><input type="text" id="aud-url" placeholder="https://youtu.be/..."></div>
-    <div class="field"><label>메모 (선택)</label><input type="text" id="aud-memo" placeholder="ex) 연습실 라이브"></div>
-    <button class="btn btn-frog" onclick="addAudition()" style="margin-top:4px;">🎤 오디션 등록</button>
+  <!-- ══ SETUP ══ -->
+  <div class="panel" id="panel-setup">
+    <div class="setup-box">
+      <h2>⚙️ Google Sheets 연동 설정</h2>
+      <p>앱 데이터를 구글 시트에 저장하려면 아래 순서대로 진행해주세요. <strong>딱 한 번만</strong> 하면 돼요!</p>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-txt"><strong>Google Sheets</strong>를 새로 만들어요<br>
+          <a href="https://sheets.new" target="_blank">👉 sheets.new 바로가기</a></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-txt">상단 메뉴 → <code>확장 프로그램</code> → <code>Apps Script</code> 클릭</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-txt">받은 <code>apps-script.js</code> 내용을 전체 붙여넣고 <code>저장(Ctrl+S)</code></div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-txt"><code>배포</code> → <code>새 배포</code> → 유형: <code>웹 앱</code><br>
+          액세스: <code>모든 사용자</code> 선택 후 배포 클릭</div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-txt">생성된 <strong>웹 앱 URL</strong>을 아래에 붙여넣기 후 연결!</div>
+      </div>
+      <div class="url-input-row">
+        <input type="text" id="scriptUrlInput" placeholder="https://script.google.com/macros/s/...">
+        <button class="btn btn-water btn-sm" onclick="saveScriptUrl()" style="white-space:nowrap;">🐸 연결하기</button>
+      </div>
+      <div id="currentUrlStatus" style="margin-top:12px;font-size:12px;color:var(--muted);"></div>
+    </div>
   </div>
-  <div class="notice notice-water" style="margin-bottom:14px;">
-    <div style="font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted);margin-bottom:8px;">평가자 선택</div>
-    <div class="member-row" id="audMemberChips" style="margin-bottom:0;"></div>
-  </div>
-  <div class="sec">오디션 후보</div>
-  <div id="auditionList"><div class="empty"><div class="icon">🎤</div>오디션 영상을 등록해보세요!</div></div>
-</div>
 
-<!-- ══ MEMBERS ══ -->
-<div class="panel" id="panel-members">
-  <div class="band-hero">
-    <div class="band-hero-name">물개구리</div>
-    <div class="band-hero-sub">🐸 우리들의 밴드 🌊</div>
+  <!-- ══ HISTORY ══ -->
+  <div class="panel" id="panel-history">
+    <div class="notice notice-frog">🐸 물개구리의 공연 기록</div>
+    <div id="historyList"></div>
   </div>
-  <div class="sec">멤버 소개</div>
-  <div class="members-grid" id="membersGrid"></div>
-  <div class="card" style="margin-top:4px;">
-    <h3 style="font-size:14px;margin-bottom:12px;">➕ 멤버 추가</h3>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <div class="field" style="flex:1;min-width:100px;margin-bottom:0;"><label>이름</label><input type="text" id="new-mem-name" placeholder="이름"></div>
-      <div class="field" style="flex:1;min-width:100px;margin-bottom:0;"><label>포지션</label><input type="text" id="new-mem-pos" placeholder="ex) 기타, 보컬…"></div>
-    </div>
-    <button class="btn btn-frog" onclick="addMember()" style="margin-top:12px;">멤버 추가하기</button>
-  </div>
-</div>
-
-<!-- ══ SETUP PANEL ══ -->
-<div class="panel" id="panel-setup">
-  <div class="setup-box">
-    <h2>⚙️ Google Sheets 연동 설정</h2>
-    <p>앱 데이터를 구글 시트에 저장하려면 아래 순서대로 진행해주세요. <strong>딱 한 번만</strong> 하면 돼요!</p>
-    <div class="step">
-      <div class="step-num">1</div>
-      <div class="step-txt"><strong>Google Sheets</strong>를 새로 만들어요<br>
-        <a href="https://sheets.new" target="_blank">👉 sheets.new 바로가기</a></div>
-    </div>
-    <div class="step">
-      <div class="step-num">2</div>
-      <div class="step-txt">상단 메뉴 → <code>확장 프로그램</code> → <code>Apps Script</code> 클릭</div>
-    </div>
-    <div class="step">
-      <div class="step-num">3</div>
-      <div class="step-txt">받은 <code>apps-script.js</code> 내용을 전체 붙여넣고 <code>저장(Ctrl+S)</code></div>
-    </div>
-    <div class="step">
-      <div class="step-num">4</div>
-      <div class="step-txt"><code>배포</code> → <code>새 배포</code> → 유형: <code>웹 앱</code><br>
-        액세스: <code>모든 사용자</code> 선택 후 배포 클릭</div>
-    </div>
-    <div class="step">
-      <div class="step-num">5</div>
-      <div class="step-txt">생성된 <strong>웹 앱 URL</strong>을 아래에 붙여넣기 후 연결!</div>
-    </div>
-    <div class="url-input-row">
-      <input type="text" id="scriptUrlInput" placeholder="https://script.google.com/macros/s/...">
-      <button class="btn btn-water btn-sm" onclick="saveScriptUrl()" style="white-space:nowrap;">🐸 연결하기</button>
-    </div>
-    <div id="currentUrlStatus" style="margin-top:12px;font-size:12px;color:var(--muted);"></div>
-  </div>
-</div>
-
-<!-- ══ HISTORY ══ -->
-<div class="panel" id="panel-history">
-  <div class="notice notice-frog">🐸 물개구리의 공연 기록</div>
-  <div id="historyList"></div>
-</div>
 
 </div><!-- /page-body -->
 
-<!-- sync bar -->
 <div class="sync-bar" id="syncBar" style="display:none;"></div>
 
-<!-- member modal -->
 <div class="modal-overlay" id="memberModal">
   <div class="modal">
     <h3 id="modalTitle">멤버 정보 수정</h3>
@@ -419,564 +188,6 @@
   </div>
 </div>
 
-<script>
-/* ══════════════════════════════════════
-   CONFIG — Apps Script URL 저장
-══════════════════════════════════════ */
-const LS_KEY = 'mgfrog_script_url';
-
-// ✏️ 여기에 URL 직접 입력하면 새로고침해도 항상 유지돼요!
-// 예: const HARDCODED_URL = 'https://script.google.com/macros/s/ABC.../exec';
-const HARDCODED_URL = 'https://script.google.com/macros/s/AKfycbyr75uhTkAWzY3qITWUwXk9a4TWbOjR88cH88TPDMVp1fnS-YOdiEwqyY1dFuc8wXQZ/exec';
-
-let SCRIPT_URL = HARDCODED_URL || (() => {
-  try { return localStorage.getItem(LS_KEY) || ''; } catch(e) { return ''; }
-})();
-
-function saveScriptUrl() {
-  const v = document.getElementById('scriptUrlInput').value.trim();
-  if (!v.startsWith('https://script.google.com')) {
-    alert('올바른 Apps Script URL을 입력해주세요!'); return;
-  }
-  SCRIPT_URL = v;
-  try { localStorage.setItem(LS_KEY, v); } catch(e) {}
-  const status = document.getElementById('currentUrlStatus');
-  status.textContent = `✅ 연결 완료: ${SCRIPT_URL.slice(0,60)}…`;
-  status.style.color = 'var(--frog)';
-  showSync('🐸 연결 완료!', 'ok');
-  switchTab('add');
-  loadAll();
-}
-
-function checkSetup() {
-  if (!SCRIPT_URL) {
-    // URL 미설정이면 ⚙️ 탭으로 자동 이동
-    switchTab('setup');
-  }
-}
-
-/* ══════════════════════════════════════
-   API HELPERS
-══════════════════════════════════════ */
-async function api(params) {
-  if (!SCRIPT_URL) return null;
-  const qs = new URLSearchParams(params).toString();
-  const res = await fetch(`${SCRIPT_URL}?${qs}`);
-  return res.json();
-}
-
-async function apiPost(body) {
-  if (!SCRIPT_URL) return null;
-  const res = await fetch(SCRIPT_URL, {
-    method: 'POST',
-    body: JSON.stringify(body),
-  });
-  return res.json();
-}
-
-/* ── sync bar ── */
-let syncTimer;
-function showSync(msg, type='') {
-  const bar = document.getElementById('syncBar');
-  bar.textContent = msg;
-  bar.className = 'sync-bar' + (type ? ' '+type : '');
-  bar.style.display = 'block';
-  clearTimeout(syncTimer);
-  syncTimer = setTimeout(() => bar.style.display='none', 2500);
-}
-
-/* ══════════════════════════════════════
-   STATE
-══════════════════════════════════════ */
-let songs     = [];
-let votes     = {};   // { songId: { voter: score } }
-let auditions = [];
-let audVotes  = {};   // { audId: { voter: {pitch,feel,stage} } }
-let members   = [
-  {idx:0,name:'멤버1',position:'보컬',   quote:'한마디를 입력해주세요!',photo:null},
-  {idx:1,name:'멤버2',position:'기타',   quote:'한마디를 입력해주세요!',photo:null},
-  {idx:2,name:'멤버3',position:'기타2',  quote:'한마디를 입력해주세요!',photo:null},
-  {idx:3,name:'멤버4',position:'베이스', quote:'한마디를 입력해주세요!',photo:null},
-  {idx:4,name:'멤버5',position:'드럼',   quote:'한마디를 입력해주세요!',photo:null},
-  {idx:5,name:'멤버6',position:'키보드', quote:'한마디를 입력해주세요!',photo:null},
-  {idx:6,name:'멤버7',position:'보컬2',  quote:'한마디를 입력해주세요!',photo:null},
-  {idx:7,name:'멤버8',position:'베이스2',quote:'한마디를 입력해주세요!',photo:null},
-];
-
-let currentVoter = null;
-let audVoter     = null;
-let editingIdx   = null;
-
-const HISTORY = [
-  { year:'2024 겨울', songs:[
-    {name:'예뻤어',artist:'데이식스',done:true},
-    {name:'고백',artist:'델리스파이스',done:true},
-  ]},
-  { year:'2025 여름', songs:[
-    {name:'antifreeze',artist:'검정치마',done:false,note:'중도 하차'},
-    {name:'너에게 닿기를',artist:'10cm',done:false,note:'중도 하차'},
-    {name:'고민중독(이홍기)',artist:'QWER',done:false,note:'중도 하차'},
-    {name:'뭐라할까',artist:'브리즈',done:true},
-    {name:'나는 나비',artist:'YB',done:true},
-    {name:'나에게로 떠나는 여행',artist:'버즈',done:true},
-  ]},
-  { year:'2025 겨울', songs:[
-    {name:'어쩌다 가끔씩',artist:'AMP',done:true},
-    {name:'그대 입술이',artist:'버스커버스커',done:true},
-  ]},
-];
-
-/* ══════════════════════════════════════
-   LOAD ALL DATA
-══════════════════════════════════════ */
-async function loadAll() {
-  if (!SCRIPT_URL) {
-    // URL 없어도 로컬 상태로 바로 렌더링
-    refreshAll();
-    return;
-  }
-  showSync('⏳ 데이터 불러오는 중…');
-  try {
-    const [sRes, vRes, aRes, avRes, mRes] = await Promise.all([
-      api({action:'getSongs'}),
-      api({action:'getVotes'}),
-      api({action:'getAuditions'}),
-      api({action:'getAudVotes'}),
-      api({action:'getMembers'}),
-    ]);
-
-    if (sRes?.songs)  songs     = sRes.songs;
-    if (aRes?.auditions) auditions = aRes.auditions;
-
-    // votes: { songId: { voter: score } }
-    votes = {};
-    (vRes?.votes||[]).forEach(v => {
-      if (!votes[v.songId]) votes[v.songId]={};
-      votes[v.songId][v.voter] = +v.score;
-    });
-
-    // audVotes
-    audVotes = {};
-    (avRes?.audVotes||[]).forEach(v => {
-      if (!audVotes[v.audId]) audVotes[v.audId]={};
-      audVotes[v.audId][v.voter]={pitch:+v.pitch,feel:+v.feel,stage:+v.stage};
-    });
-
-    // members: 시트 데이터 있으면 병합, 없으면 기본값(8명) 그대로 유지
-    if (mRes?.members?.length) {
-      mRes.members.forEach(m => {
-        const i = members.findIndex(x => String(x.idx) === String(m.idx));
-        if (i >= 0) members[i] = { ...members[i], ...m, photo: m.photo || null };
-        else members.push({ ...m, photo: m.photo || null });
-      });
-    }
-
-    showSync('✅ 동기화 완료', 'ok');
-    refreshAll();
-  } catch(e) {
-    showSync('❌ 연결 실패 — URL을 확인해주세요', 'err');
-  }
-}
-
-function refreshAll() {
-  renderAddedList();
-  renderVoteList();
-  renderResult();
-  renderAuditions();
-  renderMembers();
-  renderMemberChips();
-  renderAudMemberChips();
-}
-
-/* ══════════════════════════════════════
-   TABS
-══════════════════════════════════════ */
-const TAB_IDS = ['add','vote','result','audition','members','history','setup'];
-function switchTab(id) {
-  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',TAB_IDS[i]===id));
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.getElementById('panel-'+id).classList.add('active');
-  if (id==='members')  { renderMembers(); renderMemberChips(); }
-  if (id==='vote')     { renderMemberChips(); renderVoteList(); }
-  if (id==='result')   renderResult();
-  if (id==='audition') { renderAudMemberChips(); renderAuditions(); }
-  if (id==='setup') {
-    const status = document.getElementById('currentUrlStatus');
-    status.textContent = SCRIPT_URL ? `✅ 현재 연결된 URL: ${SCRIPT_URL.slice(0,60)}…` : '❌ 아직 연결된 URL이 없어요.';
-  }
-}
-
-/* ══════════════════════════════════════
-   BUBBLES
-══════════════════════════════════════ */
-function initBubbles(){
-  const wrap=document.getElementById('bubbles');
-  for(let i=0;i<10;i++){
-    const b=document.createElement('div'); b.className='bubble';
-    const s=6+Math.random()*14;
-    b.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;bottom:${Math.random()*40}px;animation-duration:${3+Math.random()*4}s;animation-delay:${Math.random()*4}s;`;
-    wrap.appendChild(b);
-  }
-}
-
-/* ══════════════════════════════════════
-   SONGS
-══════════════════════════════════════ */
-async function addSong() {
-  const artist   = document.getElementById('inp-artist').value.trim();
-  const title    = document.getElementById('inp-title').value.trim();
-  const proposer = document.getElementById('inp-proposer').value.trim();
-  if (!artist||!title){alert('아티스트와 곡 제목을 입력해주세요!');return;}
-
-  const newSong = {
-    id: Date.now().toString(), artist, title,
-    genre:    document.getElementById('inp-genre').value,
-    session:  +document.getElementById('sl-session').value,
-    vocal:    +document.getElementById('sl-vocal').value,
-    proposer: proposer||'익명',
-  };
-  songs.push(newSong);
-  ['inp-artist','inp-title','inp-proposer'].forEach(id=>document.getElementById(id).value='');
-  renderAddedList(); renderVoteList(); renderResult();
-
-  if (SCRIPT_URL) {
-    showSync('💾 저장 중…');
-    const res = await apiPost({action:'addSong', ...newSong});
-    if (res?.ok) showSync('✅ 곡 추가 완료!','ok');
-    else showSync('❌ 저장 실패','err');
-  }
-}
-
-async function removeSong(id) {
-  if (!confirm('이 곡을 삭제할까요?')) return;
-  showSync('🗑️ 삭제 중…');
-  await apiPost({action:'removeSong', id});
-  songs = songs.filter(s=>s.id.toString()!==id.toString());
-  delete votes[id];
-  renderAddedList(); renderVoteList(); renderResult();
-  showSync('✅ 삭제 완료','ok');
-}
-
-function renderAddedList() {
-  const el=document.getElementById('addedList');
-  if(!songs.length){el.innerHTML=`<div class="empty"><div class="icon">🎵</div>아직 추가된 곡이 없어요<br><small>위에서 후보곡을 추가해봐요!</small></div>`;return;}
-  el.innerHTML=songs.map(s=>`
-    <div class="song-card">
-      <div class="song-top">
-        <div>
-          <div class="song-title">${s.title}</div>
-          <div class="song-artist">${s.artist}</div>
-          <div class="song-proposer">제안: ${s.proposer}</div>
-        </div>
-        <button class="btn btn-ghost btn-sm" onclick="removeSong('${s.id}')" style="color:#ff4444;border-color:#ff444433;">✕</button>
-      </div>
-      <div class="badges">
-        <span class="badge badge-genre">${s.genre}</span>
-        <span class="badge badge-sess">세션 ${s.session}/5</span>
-        <span class="badge badge-voc">보컬 ${s.vocal}/5</span>
-      </div>
-    </div>`).join('');
-}
-
-/* ══════════════════════════════════════
-   VOTES
-══════════════════════════════════════ */
-function renderMemberChips(){
-  document.getElementById('memberChips').innerHTML=
-    members.map(m=>`<div class="mchip ${currentVoter===m.name?'active':''}" onclick="selectVoter('${m.name}')">${m.position}</div>`).join('');
-}
-function selectVoter(name){currentVoter=currentVoter===name?null:name;renderMemberChips();renderVoteList();}
-
-function renderVoteList(){
-  const el=document.getElementById('voteList');
-  if(!songs.length){el.innerHTML=`<div class="empty"><div class="icon">🗳️</div>먼저 곡추가 탭에서 후보곡을 등록해봐요!</div>`;return;}
-  el.innerHTML=songs.map(s=>{
-    const sv=votes[s.id]||{};
-    const totalV=Object.keys(sv).length;
-    const myV=currentVoter&&sv[currentVoter];
-    const avgH=totalV?(Object.values(sv).reduce((a,v)=>a+v,0)/totalV).toFixed(1):'-';
-    return `
-    <div class="song-card">
-      <div class="song-top">
-        <div>
-          <div class="song-title">${s.title}</div>
-          <div class="song-artist">${s.artist}</div>
-          <div class="song-proposer">제안: ${s.proposer}</div>
-        </div>
-      </div>
-      <div class="badges">
-        <span class="badge badge-genre">${s.genre}</span>
-        <span class="badge badge-sess">세션 ${s.session}/5</span>
-        <span class="badge badge-voc">보컬 ${s.vocal}/5</span>
-      </div>
-      <div class="diff-bars">
-        <div class="dbar-row"><span class="dbar-label">세션</span><div class="dbar-bg"><div class="dbar-fill fill-sess" style="width:${s.session/5*100}%"></div></div><span class="dbar-num">${s.session}</span></div>
-        <div class="dbar-row"><span class="dbar-label">보컬</span><div class="dbar-bg"><div class="dbar-fill fill-voc" style="width:${s.vocal/5*100}%"></div></div><span class="dbar-num">${s.vocal}</span></div>
-      </div>
-      <div class="vote-row">
-        <button class="vbtn ${myV===5?'v5':''}" onclick="castVote('${s.id}',5)">🔥 꼭해야해</button>
-        <button class="vbtn ${myV===3?'v3':''}" onclick="castVote('${s.id}',3)">👍 괜찮아</button>
-        <button class="vbtn ${myV===1?'v1':''}" onclick="castVote('${s.id}',1)">😐 글쎄</button>
-      </div>
-      <div class="vote-info">🗳️ ${totalV}명 참여 · 평균 선호도 ${avgH}점</div>
-    </div>`;
-  }).join('');
-}
-
-async function castVote(songId, score) {
-  if (!currentVoter){alert('먼저 내 포지션을 선택해주세요! 🐸');return;}
-  const sv = votes[songId]||{};
-  const isCancel = sv[currentVoter]===score;
-  if (!votes[songId]) votes[songId]={};
-  if (isCancel) delete votes[songId][currentVoter];
-  else votes[songId][currentVoter]=score;
-  renderVoteList(); renderResult();
-
-  if (SCRIPT_URL) {
-    showSync('💾 투표 저장 중…');
-    await apiPost({action:'castVote', songId, voter:currentVoter, score: isCancel?null:score});
-    showSync('✅ 투표 완료!','ok');
-  }
-}
-
-/* ══════════════════════════════════════
-   RESULT
-══════════════════════════════════════ */
-function calcScore(s){
-  const sv=votes[s.id]||{};
-  const vs=Object.values(sv);
-  if(!vs.length)return 0;
-  const avg=vs.reduce((a,v)=>a+v,0)/vs.length;
-  const d=+s.session + +s.vocal;
-  const bal=(d>=5&&d<=8)?1.2:1;
-  return +(avg*bal*(vs.length/members.length)).toFixed(2);
-}
-function renderResult(){
-  const sorted=[...songs].sort((a,b)=>calcScore(b)-calcScore(a));
-  const el=document.getElementById('resultList');
-  if(!sorted.length){el.innerHTML=`<div class="empty"><div class="icon">🏆</div>아직 투표 데이터가 없어요</div>`;return;}
-  el.innerHTML=sorted.map((s,i)=>{
-    const cls=['res-1','res-2','res-3'][i]||'';
-    const medal=['🥇 1위','🥈 2위','🥉 3위'][i]||`${i+1}위`;
-    const pick=i<4?' ✅ 선정 후보':'';
-    return `<div class="res-card ${cls}">
-      <div class="res-rank">${medal}${pick}</div>
-      <div class="res-title">${s.title}</div>
-      <div class="res-artist">${s.artist}</div>
-      <div class="res-score">${calcScore(s).toFixed(1)}점</div>
-      <div class="res-detail">세션 ${s.session}/5 · 보컬 ${s.vocal}/5 · ${Object.keys(votes[s.id]||{}).length}명 참여</div>
-    </div>`;
-  }).join('');
-}
-
-/* ══════════════════════════════════════
-   AUDITION
-══════════════════════════════════════ */
-async function addAudition(){
-  const song=document.getElementById('aud-song').value.trim();
-  const name=document.getElementById('aud-name').value.trim();
-  const url=document.getElementById('aud-url').value.trim();
-  const memo=document.getElementById('aud-memo').value.trim();
-  if(!song||!name){alert('곡 제목과 후보자 이름을 입력해주세요!');return;}
-  showSync('💾 저장 중…');
-  const res=await apiPost({action:'addAudition',song,name,url,memo});
-  if(res?.ok){
-    auditions.push({id:res.id,song,name,url,memo});
-    ['aud-song','aud-name','aud-url','aud-memo'].forEach(id=>document.getElementById(id).value='');
-    renderAuditions();
-    showSync('✅ 오디션 등록 완료!','ok');
-  } else showSync('❌ 저장 실패','err');
-}
-
-function ytEmbed(url){
-  if(!url)return null;
-  const m=url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/);
-  return m?`https://www.youtube.com/embed/${m[1]}`:null;
-}
-
-function renderAudMemberChips(){
-  document.getElementById('audMemberChips').innerHTML=
-    members.map(m=>`<div class="mchip ${audVoter===m.name?'active':''}" onclick="selectAudVoter('${m.name}')">${m.position}</div>`).join('');
-}
-function selectAudVoter(name){audVoter=audVoter===name?null:name;renderAudMemberChips();renderAuditions();}
-
-async function setStars(audId,cat,val){
-  if(!audVoter){alert('먼저 내 포지션을 선택해주세요! 🐸');return;}
-  if(!audVotes[audId])audVotes[audId]={};
-  if(!audVotes[audId][audVoter])audVotes[audId][audVoter]={pitch:0,feel:0,stage:0};
-  audVotes[audId][audVoter][cat]=val;
-  const r=audVotes[audId][audVoter];
-  showSync('💾 평가 저장 중…');
-  await apiPost({action:'castAudVote',audId,voter:audVoter,pitch:r.pitch,feel:r.feel,stage:r.stage});
-  renderAuditions();
-  showSync('✅ 평가 저장!','ok');
-}
-
-function audTotal(audId){
-  const rs=Object.values(audVotes[audId]||{});
-  if(!rs.length)return{pitch:0,feel:0,stage:0,total:0,count:0};
-  const avg=k=>rs.reduce((s,r)=>s+(r[k]||0),0)/rs.length;
-  const p=avg('pitch'),f=avg('feel'),st=avg('stage');
-  return{pitch:p,feel:f,stage:st,total:+(p+f+st).toFixed(1),count:rs.length};
-}
-
-async function removeAud(id){
-  if(!confirm('삭제할까요?'))return;
-  showSync('🗑️ 삭제 중…');
-  await apiPost({action:'removeAudition',id});
-  auditions=auditions.filter(a=>a.id.toString()!==id.toString());
-  delete audVotes[id];
-  renderAuditions();
-  showSync('✅ 삭제 완료','ok');
-}
-
-function renderAuditions(){
-  const el=document.getElementById('auditionList');
-  if(!auditions.length){el.innerHTML=`<div class="empty"><div class="icon">🎤</div>오디션 영상을 등록해보세요!</div>`;return;}
-  const bySong={};
-  auditions.forEach(a=>{(bySong[a.song]=bySong[a.song]||[]).push(a);});
-  el.innerHTML=Object.entries(bySong).map(([song,cands])=>{
-    const ranked=[...cands].sort((a,b)=>audTotal(b.id).total-audTotal(a.id).total);
-    const topId=ranked[0]?.id;
-    return `<div style="margin-bottom:24px;">
-      <div class="sec" style="color:var(--pink);">🎵 ${song}</div>
-      ${cands.map(a=>{
-        const sc=audTotal(a.id);
-        const my=audVoter&&(audVotes[a.id]||{})[audVoter];
-        const emb=ytEmbed(a.url);
-        const isTop=a.id.toString()===topId?.toString()&&sc.count>0;
-        const sr=(cat,icon,label)=>`<div class="rating-group">
-          <span class="rating-label">${icon} ${label}</span>
-          <div class="stars">${[1,2,3,4,5].map(n=>`<span class="star ${(my?.[cat]||0)>=n?'on':''}" onclick="setStars('${a.id}','${cat}',${n})">⭐</span>`).join('')}</div>
-        </div>`;
-        return `<div class="aud-card" style="${isTop?'border-color:var(--frog);box-shadow:var(--glow-g);':''}">
-          <div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:10px;">
-            <div>
-              <div class="aud-name">🎤 ${a.name}${isTop?`<span class="crown">👑 최고점</span>`:''}</div>
-              ${a.memo?`<div style="font-size:12px;color:var(--muted);margin-top:3px;">📝 ${a.memo}</div>`:''}
-              ${a.url&&!emb?`<a style="font-size:12px;color:var(--water);display:block;margin-top:4px;" href="${a.url}" target="_blank">🔗 영상 보기</a>`:''}
-            </div>
-            <button class="btn btn-ghost btn-sm" onclick="removeAud('${a.id}')" style="color:#ff4444;border-color:#ff444433;">✕</button>
-          </div>
-          ${emb?`<iframe class="video-embed" src="${emb}" allowfullscreen loading="lazy"></iframe>`:''}
-          <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">
-            ${audVoter?`<span style="color:var(--frog)">🐸 ${audVoter}</span> 로 평가 중`:'⚠️ 위에서 포지션을 선택해주세요'}
-          </div>
-          ${sr('pitch','🎵','음정 / 음색')}
-          ${sr('feel','💜','감성 / 표현력')}
-          ${sr('stage','🔥','무대매너 / 에너지')}
-          <div class="aud-scores">
-            ${[['pitch','🎵 음정'],['feel','💜 감성'],['stage','🔥 무대']].map(([k,l])=>`
-              <div class="asrow"><span class="lbl">${l}</span><div class="bg"><div class="fill" style="width:${sc[k]/5*100}%"></div></div><span class="num">${sc[k].toFixed(1)}</span></div>`).join('')}
-            <div class="aud-total"><span class="lbl">총점 (${sc.count}명)</span><span class="val">${sc.total} / 15</span></div>
-          </div>
-        </div>`;
-      }).join('')}
-    </div>`;
-  }).join('');
-}
-
-/* ══════════════════════════════════════
-   MEMBERS
-══════════════════════════════════════ */
-async function addMember(){
-  const name=document.getElementById('new-mem-name').value.trim();
-  const pos=document.getElementById('new-mem-pos').value.trim();
-  if(!name||!pos){alert('이름과 포지션을 입력해주세요!');return;}
-  const idx=Date.now();
-  const m={idx,name,position:pos,quote:'한마디를 입력해주세요!',photo:null};
-  members.push(m);
-  showSync('💾 저장 중…');
-  await apiPost({action:'saveMember',...m});
-  document.getElementById('new-mem-name').value='';
-  document.getElementById('new-mem-pos').value='';
-  renderMembers(); renderMemberChips(); renderAudMemberChips();
-  showSync('✅ 멤버 추가!','ok');
-}
-
-async function removeMember(idx){
-  if(!confirm(`${members[idx].name}(${members[idx].position}) 삭제할까요?`))return;
-  members.splice(idx,1);
-  renderMembers(); renderMemberChips(); renderAudMemberChips();
-}
-
-function uploadPhoto(idx,input){
-  const file=input.files[0];if(!file)return;
-  const r=new FileReader();
-  r.onload=async e=>{
-    members[idx].photo=e.target.result;
-    renderMembers();
-    showSync('💾 사진 저장 중…');
-    await apiPost({action:'saveMember',...members[idx]});
-    showSync('✅ 사진 저장!','ok');
-  };
-  r.readAsDataURL(file);
-}
-
-function openModal(idx){
-  editingIdx=idx;
-  const m=members[idx];
-  document.getElementById('modal-name').value=m.name;
-  document.getElementById('modal-pos').value=m.position;
-  document.getElementById('modal-quote').value=m.quote;
-  document.getElementById('modalTitle').textContent=`${m.position} 수정`;
-  document.getElementById('memberModal').classList.add('open');
-}
-function closeModal(){document.getElementById('memberModal').classList.remove('open');editingIdx=null;}
-async function saveModal(){
-  if(editingIdx===null)return;
-  members[editingIdx]={...members[editingIdx],
-    name:document.getElementById('modal-name').value.trim()||members[editingIdx].name,
-    position:document.getElementById('modal-pos').value.trim()||members[editingIdx].position,
-    quote:document.getElementById('modal-quote').value.trim()||members[editingIdx].quote,
-  };
-  closeModal(); renderMembers(); renderMemberChips(); renderAudMemberChips();
-  showSync('💾 저장 중…');
-  await apiPost({action:'saveMember',...members[editingIdx]});
-  showSync('✅ 저장 완료!','ok');
-}
-
-function renderMembers(){
-  document.getElementById('membersGrid').innerHTML=members.map((m,i)=>`
-    <div class="mem-card">
-      ${m.photo
-        ?`<img class="mem-photo" src="${m.photo}" alt="${m.name}">`
-        :`<div class="mem-placeholder">📷<input type="file" accept="image/*" onchange="uploadPhoto(${i},this)"></div>`}
-      <div class="mem-name">${m.name}</div>
-      <div class="mem-pos">${m.position}</div>
-      <div class="mem-quote">"${m.quote}"</div>
-      <button class="mem-edit-btn" onclick="openModal(${i})">✏️ 수정</button>
-      <button class="mem-edit-btn" onclick="removeMember(${i})" style="color:#ff4444;border-color:#ff444433;margin-left:4px;">🗑️</button>
-    </div>`).join('');
-}
-
-/* ══════════════════════════════════════
-   HISTORY
-══════════════════════════════════════ */
-function renderHistory(){
-  document.getElementById('historyList').innerHTML=HISTORY.map(y=>`
-    <div class="hy">${y.year}</div>
-    ${y.songs.map(s=>`
-      <div class="hi">
-        <div class="hdot ${s.done?'done':''}"></div>
-        <div><div class="hname">${s.name}</div><div style="font-size:11px;color:var(--muted)">${s.artist}</div></div>
-        ${s.note?`<div class="hnote">${s.note}</div>`:''}
-      </div>`).join('')}`).join('');
-}
-
-/* ══════════════════════════════════════
-   INIT
-══════════════════════════════════════ */
-function init(){
-  initBubbles();
-  renderHistory();
-  checkSetup();
-  loadAll();
-  document.getElementById('memberModal').addEventListener('click',function(e){
-    if(e.target===this)closeModal();
-  });
-}
-init();
-</script>
+<script src="js/app.js"></script>
 </body>
 </html>
