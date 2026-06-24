@@ -574,12 +574,25 @@ async function saveModal() {
   showSync('✅ 저장 완료!', 'ok');
 }
 
+function getFrogImg(position) {
+  const p = (position || '').toLowerCase();
+  if (p.includes('보컬') || p.includes('vocal'))                                       return 'img/frog-vocal.svg';
+  if (p.includes('기타') || p.includes('guitar'))                                      return 'img/frog-guitar.svg';
+  if (p.includes('베이스') || p.includes('bass'))                                      return 'img/frog-bass.svg';
+  if (p.includes('드럼') || p.includes('drum'))                                        return 'img/frog-drum.svg';
+  if (p.includes('키보드') || p.includes('keyboard') || p.includes('건반') || p.includes('piano')) return 'img/frog-keyboard.svg';
+  return 'img/frog-default.svg';
+}
+
 function renderMembers() {
   document.getElementById('membersGrid').innerHTML = members.map((m, i) => `
     <div class="mem-card">
       ${m.photo
         ? `<img class="mem-photo" src="${m.photo}" alt="${m.name}">`
-        : `<div class="mem-placeholder">📷<input type="file" accept="image/*" onchange="uploadPhoto(${i},this)"></div>`}
+        : `<div class="mem-placeholder" style="font-size:0;">
+             <img src="${getFrogImg(m.position)}" alt="${m.position}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;pointer-events:none;">
+             <input type="file" accept="image/*" onchange="uploadPhoto(${i},this)">
+           </div>`}
       <div class="mem-name">${m.name}</div>
       <div class="mem-pos">${m.position}</div>
       <div class="mem-quote">"${m.quote}"</div>

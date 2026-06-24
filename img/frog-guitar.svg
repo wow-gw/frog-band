@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100" height="100" fill="#071820"/>
+  <!-- Guitar neck -->
+  <rect x="66" y="28" width="6" height="30" rx="3" fill="#c8831e"/>
+  <!-- Guitar headstock -->
+  <rect x="64" y="23" width="10" height="8" rx="2" fill="#b07018"/>
+  <!-- Tuning pegs -->
+  <circle cx="65" cy="25" r="2" fill="#888"/>
+  <circle cx="65" cy="29" r="2" fill="#888"/>
+  <circle cx="73" cy="25" r="2" fill="#888"/>
+  <circle cx="73" cy="29" r="2" fill="#888"/>
+  <!-- Guitar body -->
+  <path d="M60,57 Q53,53 54,63 Q54,75 63,79 Q71,82 77,74 Q83,66 79,57 Q77,49 70,51 Q65,49 62,54 Z" fill="#d4922e"/>
+  <!-- Guitar waist -->
+  <path d="M60,57 Q65,62 70,57" stroke="#b07018" stroke-width="2" fill="none"/>
+  <!-- Sound hole -->
+  <circle cx="68" cy="67" r="5" fill="#b07018"/>
+  <circle cx="68" cy="67" r="3.5" fill="#071820"/>
+  <!-- Strings -->
+  <line x1="67" y1="28" x2="67" y2="78" stroke="#ccc" stroke-width="0.8" opacity="0.8"/>
+  <line x1="69" y1="28" x2="69" y2="78" stroke="#ccc" stroke-width="0.8" opacity="0.8"/>
+  <line x1="71" y1="28" x2="71" y2="78" stroke="#ccc" stroke-width="0.8" opacity="0.8"/>
+  <!-- Frog body -->
+  <ellipse cx="44" cy="77" rx="22" ry="16" fill="#2ec872"/>
+  <ellipse cx="44" cy="78" rx="14" ry="10" fill="#5effa8"/>
+  <!-- Left arm -->
+  <ellipse cx="23" cy="74" rx="8" ry="5" fill="#2ec872" transform="rotate(-20 23 74)"/>
+  <!-- Right arm on guitar -->
+  <path d="M56,73 Q62,65 66,56" stroke="#2ec872" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <!-- Head -->
+  <circle cx="44" cy="52" r="21" fill="#2ec872"/>
+  <circle cx="31" cy="38" r="11" fill="#2ec872"/>
+  <circle cx="57" cy="38" r="11" fill="#2ec872"/>
+  <circle cx="31" cy="38" r="8.5" fill="white"/>
+  <circle cx="57" cy="38" r="8.5" fill="white"/>
+  <!-- Pupils looking right toward guitar -->
+  <circle cx="33" cy="40" r="4.5" fill="#0d1a15"/>
+  <circle cx="59" cy="40" r="4.5" fill="#0d1a15"/>
+  <circle cx="34" cy="38" r="2" fill="white"/>
+  <circle cx="60" cy="38" r="2" fill="white"/>
+  <circle cx="41" cy="57" r="1.8" fill="#22a855"/>
+  <circle cx="48" cy="57" r="1.8" fill="#22a855"/>
+  <path d="M34 64 Q44 73 54 64" stroke="#0d2a1a" stroke-width="3" fill="none" stroke-linecap="round"/>
+</svg>
