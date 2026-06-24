@@ -251,14 +251,17 @@ async function addSong() {
 
 async function removeSong(id) {
   if (!confirm('이 곡을 삭제할까요?')) return;
-  showSync('🗑️ 삭제 중…');
-  await apiPost({action: 'removeSong', id});
   songs = songs.filter(s => s.id.toString() !== id.toString());
   saveLocal(LS_SONGS_KEY, songs);
   delete votes[id];
   saveLocal(LS_VOTES_KEY, votes);
   renderAddedList(); renderVoteList(); renderResult();
-  showSync('✅ 삭제 완료', 'ok');
+
+  if (SCRIPT_URL) {
+    showSync('🗑️ 삭제 중…');
+    await apiPost({action: 'removeSong', id});
+    showSync('✅ 삭제 완료', 'ok');
+  }
 }
 
 function renderAddedList() {

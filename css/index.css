@@ -41,6 +41,7 @@ body {
   text-align: center;
 }
 .hero svg   { display: block; width: 100%; height: auto; }
+.hero img   { display: block; width: 100%; height: auto; }
 .wave-svg   { display: none; }
 .band-emoji { display: none; }
 .band-label { display: none; }
